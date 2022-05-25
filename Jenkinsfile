@@ -35,5 +35,11 @@ pipeline {
                 sh 'sshpass -p "gamut" ssh gamut@172.17.0.3 "/home/gamut/distoss/apache-tomcat-9.0.63/bin/startup.sh"'
             }
         }
+       stage('Notification') {
+           steps{
+           emailext body: 'if something is broken you are responsible ,hence fix it ASAP',
+                 subject: 'Build status on jenkinsfile', to: 'tammalivishu@gmail.com'
+            }
+        }
     }
 }
