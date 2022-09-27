@@ -7,23 +7,23 @@ pipeline {
 //            M2_INSTALL = "/usr/bin/mvn" 
 //           } 
               stages {
-                 stages ( 'Clone-Repo' ) {
+                 stage ( 'Clone-Repo' ) {
                      steps {
                         checkout scm
                            } 
                  }    
-                 stages ( 'Build' )  {
+                 stage ( 'Build' )  {
                      steps {
                      sh 'maven install -Dmaven.test.skip=true'
                            } 
                 }  
-                stages ( 'Unit-Tests' ) {
+                stage ( 'Unit-Tests' ) {
                       steps { 
                       sh 'mvn compiler:testCompile'
                       sh 'mvn surefire:test' 
                            }  
                 } 
-                stages ( 'Deployment' ) {
+                stage ( 'Deployment' ) {
                       steps {   
                       if ( env.BRANCH_NAME ==  'master' ) {
                          fileExists '/root/.jenkins/workspace/2gamut-clone/target/gamutgurus.war'
