@@ -1,0 +1,45 @@
+pipeline {
+//            agent any 
+//            tools {
+//                 maven 'maven3.6' 
+//           } 
+ //           environment {
+ //               M2_INSTALL = "/usr/bin/mvn" 
+ //           } 
+              stages {
+                 stages ( 'Clone-Repo' ) {
+                     steps {
+                        checkout scm
+                           } 
+                 }    
+                 stages ( 'Build' )  {
+                     steps {
+                     sh 'maven install -Dmaven.test.skip=true'
+                           } 
+                }  
+                stages ( 'Unit-Tests' ) {
+                      steps { 
+                      sh 'mvn compiler:testCompile'
+                      sh 'mvn surefire:test' 
+                           }  
+                } 
+                stages ( 'Deployment' ) {
+                      steps {   
+                      if ( env.BRANCH_NAME ==  'master' ) {
+                                   fileExists '/root/.jenkins/workspace/2gamut-clone/target/gamutgurus.war'
+                                   sh 'sshpass -p "gamut" scp target/gamutgurus.war gamut@172.17.2.3:/home/gamut/distoss/apache-tomact/webapps'
+                                   sh 'sshpass -p "gamut" ssh gamut@172.17.0.3 "/home/gamut/distoss/apache-tomact/bin/startup.sh"
+                               }  
+                               else { 
+                               echo "I execute elsewhere"
+                               }
+                               }
+                  }   
+                  stages ( 'Notification' ) {
+                      steps {
+                   emailext body: 'if something broken plse do respons ASAP', subject: 'Build status on jenkins', to: 'tammalivishu@gmail.com' 
+                               } 
+                  }
+                  
+          } 
+  }
