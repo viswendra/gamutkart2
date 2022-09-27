@@ -27,8 +27,8 @@ pipeline {
                       steps {   
                       if ( env.BRANCH_NAME ==  'master' ) {
                          fileExists '/root/.jenkins/workspace/2gamut-clone/target/gamutgurus.war'
-                         sh 'sshpass -p "gamut" scp target/gamutgurus.war gamut@172.17.2.3:/home/gamut/distoss/apache-tomcat-9.0.63/webapps'
-                         sh 'sshpass -p "gamut" ssh gamut@172.17.0.3 "/home/gamut/distoss/apache-tomcat-9.0.63/bin/startup.sh"
+                         sh 'sshpass -p "gamut" scp target/gamutgurus.war gamut@172.17.2.3:/home/gamut/distoss/apache-tomcat-9.0.63/webapps"
+                         sh 'sshpass -p "gamut" ssh gamut@172.17.0.3 "/home/gamut/distoss/apache-tomcat-9.0.63/bin/startup.sh"'
                                }  
                                else { 
                                echo "I execute elsewhere"
